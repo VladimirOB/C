@@ -1,0 +1,331 @@
+#include <iostream>
+#include <time.h>
+
+using namespace std;
+// Пользователь вводит размеры двумерного массива, массив заполняется случайными числами в диапазоне [0, 20]
+//Программа выводит неотсортированный и отсортированные массивы на экран(сортировать любым методом)
+
+
+void PrintArray(int** array, int rows,int cols)
+{
+	for (size_t t = 0; t < rows; t++)
+	{
+		for (size_t n = 0; n< cols; n++)
+		{
+			cout << array[t][n] << " ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+}
+
+
+/// <summary>
+/// сортировка методом "пузырька"
+/// </summary>
+/// <param name="array"></param>
+/// <param name="size"></param>
+void BubbleSort(int** array, int rows,int cols)
+{
+	// перебор всех элементов массива
+	for (int i = 1; i < rows*cols; i++)
+	{
+		// проход массива от конца в начало со "утоплением" одного элемента
+		for (size_t k=0; k <rows; k++)
+		{
+			for (int j = 0; j <cols; j++)
+			{
+				if (j == cols -1)
+				{
+					if (k  == rows-1 )
+						continue;
+					
+					if (array[k][j] > array[k + 1][0])
+					{
+						
+							int temp = array[k][j];
+							array[k][j] = array[k + 1][0];
+							array[k + 1][0] = temp;
+						
+					}
+				}
+				else
+				if (array[k][j +1] < array[k][j])
+				{
+					// перестановка элементов
+					int temp = array[k][j +1];
+					array[k][j + 1] = array[k][j];
+					array[k][j] = temp;
+				}
+			}
+
+		}
+		
+
+		
+		// вывести промежуточный результат
+		// cout << i << ". "<<endl;
+		//PrintArray(array,rows,cols);
+	}
+}
+
+int main()
+{
+	srand(time(0));
+
+	int rows, cols;
+	int a = 0;
+	int b = 20;
+	cout<< "Enter the rows: ";
+	cin >> rows;
+	cout << "Enter the colms: ";
+	cin >> cols;
+	int** array = new int*[rows];
+
+	for (size_t i = 0; i < rows; i++)
+	{
+		array[i] = new int[cols];
+	}
+
+	for (size_t i = 0; i < rows; i++)
+	{
+		for (size_t k = 0; k < cols; k++)
+		{
+			//cin >> array[i][k];
+			array[i][k] = rand() % (b - a + 1) + a;
+			//cout << array[i][k] << " ";
+		}
+		//cout << endl;
+	}
+
+	cout << endl;
+
+	PrintArray(array, rows,cols);
+
+	cout << endl;
+
+	BubbleSort(array,rows,cols);
+
+	//SelectionSort(array,rows,cols);
+
+	//InsertionSort(array,rows,cols);
+
+	
+	cout << endl;
+	PrintArray(array, rows,cols);
+	for (size_t i = 0; i < rows; i++)
+	{
+		delete[] array[i];
+	}
+
+	delete[] array;
+
+}
+
+
+// Пользователь вводит имя файла, программа выводит во второй файл список слов, отсортированных в алфавитном
+//порядке
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <conio.h>
+#include <stdio.h>
+#include <stdlib.h>
+using namespace std;
+void Print_buffer(char** bufferword, int wordcnt)
+{
+
+    for (size_t i = 0; i < wordcnt; i++)
+    {
+        for (size_t j = 0; bufferword[i][j] != 0; j++)
+        {
+            cout << bufferword[i][j];
+        }
+        cout << endl;
+    }
+
+
+
+
+}
+void BubbleSort(char **bufferword, int wordcnt, const int symbolmax)
+{
+    char* temp = new char[20];
+    
+    int k = 0;
+    
+
+    for (size_t i = 0; i < wordcnt; i++)
+    {
+        for (size_t j = 0; j < wordcnt; j++)
+        {
+            if (j + 1 == wordcnt)
+                continue;
+            if (bufferword[j][k] > bufferword[j + 1][k])
+            {
+                strcpy(temp, bufferword[j]);
+                strcpy(bufferword[j], bufferword[j + 1]);
+                strcpy(bufferword[j + 1], temp);
+               
+            }
+            
+                if (bufferword[j][k] == bufferword[j + 1][k])
+                {
+                    for (size_t n = 1; n<symbolmax;)
+                    {
+                        if (bufferword[j][n] == bufferword[j + 1][n])
+                            n++;
+                        else
+                            if (bufferword[j][n] < bufferword[j + 1][n])
+                                break;
+                            else
+                                if (bufferword[j][n] > bufferword[j + 1][n])
+                                {
+                                    strcpy(temp, bufferword[j]);
+                                    strcpy(bufferword[j], bufferword[j + 1]);
+                                    strcpy(bufferword[j + 1], temp);
+                                    break;
+                                }
+
+                    }
+
+                    
+                }
+
+          
+        }
+
+
+       // cout << i << ". " << endl;
+       // Print_buffer(bufferword, wordcnt);
+      //  cout << endl;
+    }
+
+    Print_buffer(bufferword, wordcnt);
+  delete [] temp;
+
+
+  
+
+}
+
+
+void main()
+{
+  
+    FILE* file_read = NULL;
+    FILE* file_write = NULL;
+    int symbolcnt = 0;  //счетчик символов
+    int wordcnt = 0;  //счетчик слов
+    int symbolmax = 0;
+    int flagword = 0;
+    int rows = 0;
+    int colums = 0;
+    int check = 0;
+    fopen_s(&file_read, "c:\\temp\\tekst.txt", "rb");
+    fopen_s(&file_write, "c:\\temp\\test.txt", "wb");
+
+    if (file_read != NULL && file_write != NULL)
+    {
+
+        int file_size = 0;
+
+        // переместиться в конец открытого файла
+        fseek(file_read, 0, SEEK_END);
+
+        // получить номер байта, где находится файловый указатель (размер файла)
+        file_size = ftell(file_read);
+        // переместиться в начало открытого файла
+        fseek(file_read, 0, SEEK_SET);
+
+        // основной буффер
+        char* buffer = (char*)malloc(file_size);
+
+
+        //двумерный буффер для поиска повторяющихся слов
+
+        char** bufferword = NULL;
+        bufferword = (char**)malloc(file_size * sizeof(char*));
+
+        for (int i = 0; i < file_size; ++i)
+            bufferword[i] = (char*)malloc(file_size * sizeof(char));
+
+       
+
+        fread(buffer, sizeof(char), file_size, file_read);
+
+        for (int i = 0; i < file_size; i++)
+        {
+            check = i;
+
+            if (buffer[i] == ' ' || buffer[i] == '.' || buffer[i] == ',' || buffer[i] == '\n' || buffer[i] == ':' || buffer[i] == ';' || buffer[i] == '\r' || buffer[i] == '?')
+            {
+                if (flagword == 1)
+                {
+
+                    wordcnt++;
+                    flagword = 0;
+
+                }
+                
+
+                
+                if (symbolcnt > symbolmax)
+                    symbolmax = symbolcnt;
+                if (symbolcnt > 0)// чтоб не заходил если два знака препинания подряд
+                {
+                 
+                    for (symbolcnt; symbolcnt > 0; symbolcnt--)
+                    {
+                        bufferword[rows][colums] = buffer[check - symbolcnt];
+                        colums++;
+
+                    }
+                    bufferword[rows][colums] = 0;
+                    colums = 0;
+                    rows++;
+                }
+               
+
+                symbolcnt = 0;
+
+            }
+            else
+            {
+                 symbolcnt++;
+                flagword = 1;
+            }
+
+
+
+
+        }
+       
+       
+         BubbleSort( bufferword, wordcnt, symbolmax);
+         cout << "symbol= " << symbolmax << endl;
+         cout << "word= " << wordcnt << endl;
+
+         for (size_t i = 0; i < wordcnt; i++)
+         {
+             fprintf(file_write, "%s \n", bufferword[i]);
+         }
+        
+        
+       
+        fclose(file_read);
+        fclose(file_write);
+        free(buffer);
+
+        for (int i = 0; i < file_size; i++)//удалить массив
+        {
+            free(bufferword[i]);
+        }
+        free(bufferword);
+        
+    }
+    else
+        cout << "Error!! File is not open!!" << endl;
+}
+
+

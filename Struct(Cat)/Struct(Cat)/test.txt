@@ -1,0 +1,28 @@
+You have a 3 cats.
+Id: 0
+Age: 1
+Price: 1
+Amount of hair: 1
+Name: 1
+Breed: 1
+Address: 1
+Owner: 1
+
+Id: 1
+Age: 2
+Price: 2
+Amount of hair: 2
+Name: 2
+Breed: 2
+Address: 2
+Owner: 2
+
+Id: 2
+Age: 3
+Price: 3
+Amount of hair: 3
+Name: 3
+Breed: 3
+Address: 3
+Owner: 3
+
